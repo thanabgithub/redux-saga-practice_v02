@@ -10,11 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  loadUsersStart,
-  loadUsersSuccess,
-  loadUsersError,
-} from "../redux/actions";
+import { loadUsersStart } from "../redux/actions";
 
 const iconWidth = 20;
 

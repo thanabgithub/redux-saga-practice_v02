@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { MDBValidation, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { createUserStart } from "../redux/actions";
+
 const initialState = {
   name: "",
   email: "",
@@ -12,11 +14,27 @@ const initialState = {
 const AddEditUser = (props) => {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState(initialState);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { name, email, phone, address } = formValue;
-  const handleSubmit = () => {};
+  const dispatch = useDispatch();
+
+  const { isLoading } = useSelector((state) => state.dataUsers);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (name && email && phone && address && !isSubmitting && !isLoading) {
+      setIsSubmitting(true);
+      dispatch(createUserStart(formValue));
+      setTimeout(() => navigate("/"), 5000);
+      setIsSubmitting(false);
+    }
+  };
+
   const handleInputChange = (e) => {
     let { name, value } = e.target;
-    setFormValue({ ...formValue, [name]: value });
+    setFormValue((prevForm) => {
+      return { ...formValue, [name]: value };
+    });
   };
   return (
     <MDBValidation

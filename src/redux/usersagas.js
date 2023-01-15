@@ -9,9 +9,14 @@ import {
   call,
 } from "redux-saga/effects";
 
-import { loadUsersSuccess, loadUsersError } from "./actions";
+import {
+  loadUsersSuccess,
+  loadUsersError,
+  createUserSuccess,
+  createUserError,
+} from "./actions";
 import * as types from "./actionTypes";
-import { loadUsersApi } from "./api";
+import { loadUsersApi, createUsersApi } from "./api";
 
 function* onLoadUsersStartAsync() {
   try {
@@ -25,11 +30,26 @@ function* onLoadUsersStartAsync() {
   }
 }
 
-function* onLoadUsers() {
-  yield takeLatest(types.LOAD_USERS_START, onLoadUsersStartAsync);
+function* onCreateUserStartAsync({ payload }) {
+  try {
+    const response = yield call(createUsersApi, payload);
+    if (response.status === 200) {
+      yield put(createUserSuccess());
+    }
+  } catch (e) {
+    yield put(createUserError(e));
+  }
 }
 
-const userSagas = [fork(onLoadUsers)];
+function* onLoadUsers() {
+  yield takeEvery(types.LOAD_USERS_START, onLoadUsersStartAsync);
+}
+
+function* onCreateUser() {
+  yield takeLatest(types.CREATE_USER_START, onCreateUserStartAsync);
+}
+
+const userSagas = [fork(onLoadUsers), fork(onCreateUser)];
 
 function* rootSaga() {
   yield all([...userSagas]);
