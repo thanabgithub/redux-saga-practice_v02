@@ -41,6 +41,22 @@ const deleteUserError = (error) => ({
   type: types.DELETE_USER_ERROR,
   payload: error,
 });
+
+const updateUserStart = (userInfo) => ({
+  type: types.UPDATE_USER_START,
+  payload: userInfo,
+});
+
+const updateUserSuccess = () => ({
+  type: types.UPDATE_USER_SUCCESS,
+});
+
+const updateUserError = (error) => ({
+  type: types.UPDATE_USER_ERROR,
+  payload: error,
+});
+
 export { loadUsersStart, loadUsersSuccess, loadUsersError };
 export { createUserStart, createUserSuccess, createUserError };
 export { deleteUserStart, deleteUserSuccess, deleteUserError };
+export { updateUserStart, updateUserSuccess, updateUserError };

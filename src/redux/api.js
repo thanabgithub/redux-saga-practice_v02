@@ -24,3 +24,12 @@ export const deleteUserApi = async (userId) => {
     throw new Error(e);
   }
 };
+
+export const updateUserApi = async (userId, userInfo) => {
+  try {
+    const updateUrl = `http://141.164.40.222:5000/users/${userId}`;
+    return await axios.put(updateUrl, userInfo);
+  } catch (e) {
+    throw new Error(e);
+  }
+};

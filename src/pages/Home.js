@@ -93,7 +93,7 @@ const Home = (props) => {
                     </MDBTooltip>
                   </MDBBtn>
                   <NavLink
-                    to={`/editUser/${users.id}`}
+                    to={`/editUser/${item.id}`}
                     className="nav-link text-white"
                     style={{ padding: 0 }}
                   >
@@ -107,7 +107,7 @@ const Home = (props) => {
                     </MDBTooltip>
                   </NavLink>
                   <NavLink
-                    to={`/userinfo/${users.id}`}
+                    to={`/userinfo/${item.id}`}
                     className="nav-link text-white"
                     style={{ padding: 0 }}
                   >

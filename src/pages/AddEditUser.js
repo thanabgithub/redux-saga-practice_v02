@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { MDBValidation, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { createUserStart } from "../redux/actions";
+import { useNavigate, useParams } from "react-router-dom";
+import { createUserStart, updateUserStart } from "../redux/actions";
 import { ToastContainer, toast } from "react-toastify";
 
 const initialState = {
@@ -16,18 +16,37 @@ const timeoutInterval = 5000;
 
 const AddEditUser = (props) => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  console.log(`id: ${id}`);
   const [formValue, setFormValue] = useState(initialState);
+  const { users, isLoading } = useSelector((state) => state.dataUsers);
+  const [isEditMode, setIsEditMode] = useState(false);
+  useEffect(() => {
+    if (id) {
+      setIsEditMode(true);
+      const thisUser = users.find((item) => item.id === parseInt(id));
+      console.log(thisUser);
+      setFormValue((prev) => {
+        return { ...prev, ...thisUser };
+      });
+    }
+  }, [id]);
+
   const { name, email, phone, address } = formValue;
   const dispatch = useDispatch();
-
-  const { isLoading } = useSelector((state) => state.dataUsers);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (name && email && phone && address && !isLoading) {
-      dispatch(createUserStart(formValue));
-      toast.info("adding users");
-      setTimeout(() => navigate("/"), timeoutInterval);
+      if (isEditMode) {
+        dispatch(updateUserStart({ id, formValue }));
+        toast.info("updating users");
+        setTimeout(() => navigate("/"), timeoutInterval);
+      } else {
+        dispatch(createUserStart(formValue));
+        toast.info("adding users");
+        setTimeout(() => navigate("/"), timeoutInterval);
+      }
     }
   };
 
@@ -112,7 +131,7 @@ const AddEditUser = (props) => {
       </div>
       <div className="col-12">
         <MDBBtn style={{ marginRight: 10 }} type="submit">
-          Add
+          {isEditMode ? "Update" : "Add"}
         </MDBBtn>
         <MDBBtn onClick={() => navigate("/")} color="danger">
           go back

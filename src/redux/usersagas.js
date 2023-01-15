@@ -10,15 +10,33 @@ import {
 } from "redux-saga/effects";
 
 import {
-  loadUsersSuccess,
-  loadUsersError,
   createUserSuccess,
   createUserError,
+  loadUsersSuccess,
+  loadUsersError,
+  updateUserSuccess,
+  updateUserError,
   deleteUserSuccess,
   deleteUserError,
 } from "./actions";
 import * as types from "./actionTypes";
-import { loadUsersApi, createUserApi, deleteUserApi } from "./api";
+import {
+  createUserApi,
+  loadUsersApi,
+  updateUserApi,
+  deleteUserApi,
+} from "./api";
+
+function* onCreateUserStartAsync({ payload }) {
+  try {
+    const response = yield call(createUserApi, payload);
+    if (response.status === 200) {
+      yield put(createUserSuccess());
+    }
+  } catch (e) {
+    yield put(createUserError(e));
+  }
+}
 
 function* onLoadUsersStartAsync() {
   try {
@@ -32,17 +50,17 @@ function* onLoadUsersStartAsync() {
   }
 }
 
-function* onCreateUserStartAsync({ payload }) {
+function* onUpdateUserStartAsync({ payload }) {
   try {
-    const response = yield call(createUserApi, payload);
+    const { id, formValue } = payload;
+    const response = yield call(updateUserApi, id, formValue);
     if (response.status === 200) {
-      yield put(createUserSuccess());
+      yield put(updateUserSuccess());
     }
   } catch (e) {
-    yield put(createUserError(e));
+    yield put(updateUserError(e));
   }
 }
-
 function* onDeleteUserStartAsync({ payload }) {
   try {
     const response = yield call(deleteUserApi, payload);
@@ -53,20 +71,27 @@ function* onDeleteUserStartAsync({ payload }) {
     yield put(deleteUserError(e));
   }
 }
-
-function* onLoadUsers() {
-  yield takeEvery(types.LOAD_USERS_START, onLoadUsersStartAsync);
-}
-
 function* onCreateUser() {
   yield takeLatest(types.CREATE_USER_START, onCreateUserStartAsync);
+}
+function* onUpdateUser() {
+  yield takeLatest(types.UPDATE_USER_START, onUpdateUserStartAsync);
+}
+
+function* onLoadUsers() {
+  yield takeLatest(types.LOAD_USERS_START, onLoadUsersStartAsync);
 }
 
 function* onDeleteUser() {
   yield takeLatest(types.DELETE_USER_START, onDeleteUserStartAsync);
 }
 
-const userSagas = [fork(onLoadUsers), fork(onCreateUser), fork(onDeleteUser)];
+const userSagas = [
+  fork(onCreateUser),
+  fork(onUpdateUser),
+  fork(onLoadUsers),
+  fork(onDeleteUser),
+];
 
 function* rootSaga() {
   yield all([...userSagas]);

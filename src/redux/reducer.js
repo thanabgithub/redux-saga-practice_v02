@@ -8,8 +8,9 @@ const initialState = {
 
 const usersReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.LOAD_USERS_START:
     case types.CREATE_USER_START:
+    case types.LOAD_USERS_START:
+    case types.UPDATE_USER_START:
     case types.DELETE_USER_START:
       return {
         ...state,
@@ -21,8 +22,9 @@ const usersReducer = (state = initialState, action) => {
         users: action.payload,
         isLoading: false,
       };
-    case types.LOAD_USERS_ERROR:
     case types.CREATE_USER_ERROR:
+    case types.LOAD_USERS_ERROR:
+    case types.UPDATE_USER_ERROR:
     case types.DELETE_USER_ERROR:
       return {
         ...state,
@@ -31,6 +33,7 @@ const usersReducer = (state = initialState, action) => {
       };
 
     case types.CREATE_USER_SUCCESS:
+    case types.UPDATE_USER_SUCCESS:
     case types.DELETE_USER_SUCCESS:
       return {
         ...state,
