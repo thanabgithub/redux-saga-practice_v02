@@ -1,14 +1,15 @@
 import "./App.css";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./component/Header";
 import Home from "./pages/Home";
 import AddEditUser from "./pages/AddEditUser";
 import UserInfo from "./pages/UserInfo";
 import About from "./pages/About";
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="App" style={{ height: "100%" }}>
         <Header />
         <Routes>
           <Route exact path="/" element={<Home />} />
@@ -20,6 +21,6 @@ function App() {
       </div>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

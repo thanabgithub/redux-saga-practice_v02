@@ -13,7 +13,7 @@ import {
 
 import { NavLink } from "react-router-dom";
 
-const Header = React.memo((props) => {
+const Header = (props) => {
   const [showBasic, setShowBasic] = useState(false);
   return (
     <>
@@ -37,25 +37,19 @@ const Header = React.memo((props) => {
           <MDBCollapse navbar show={showBasic}>
             <MDBNavbarNav className="mr-auto mb-2 mb-lg-0">
               <MDBNavbarItem>
-                <MDBNavbarLink className="nav-link">
-                  <NavLink to="/" className="text-white">
-                    Home
-                  </NavLink>
-                </MDBNavbarLink>
+                <NavLink to="/" className="nav-link text-white">
+                  Home
+                </NavLink>
               </MDBNavbarItem>
               <MDBNavbarItem>
-                <MDBNavbarLink className="nav-link">
-                  <NavLink to="/adduser" className="text-white">
-                    Add user
-                  </NavLink>
-                </MDBNavbarLink>
+                <NavLink to="/adduser" className="nav-link text-white">
+                  Add user
+                </NavLink>
               </MDBNavbarItem>
               <MDBNavbarItem>
-                <MDBNavbarLink className="nav-link">
-                  <NavLink to="/about" className="text-white">
-                    About
-                  </NavLink>
-                </MDBNavbarLink>
+                <NavLink to="/about" className="nav-link text-white">
+                  About
+                </NavLink>
               </MDBNavbarItem>
             </MDBNavbarNav>
           </MDBCollapse>
@@ -63,6 +57,6 @@ const Header = React.memo((props) => {
       </MDBNavbar>
     </>
   );
-});
+};
 
 export default Header;

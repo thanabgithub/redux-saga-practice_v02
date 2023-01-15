@@ -1,9 +1,11 @@
 {
-  "users": {
-    "id": 1,
-    "name": "James",
-    "email": "james@gmail.com",
-    "phone": "123456789",
-    "address": "USA"
-  }
+  "users": [
+    {
+      "id": 1,
+      "name": "James",
+      "email": "james@gmail.com",
+      "phone": "123456789",
+      "address": "USA"
+    }
+  ]
 }
