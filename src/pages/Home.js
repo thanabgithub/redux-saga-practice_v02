@@ -8,22 +8,44 @@ import {
   MDBTooltip,
   MDBSpinner,
 } from "mdb-react-ui-kit";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loadUsersStart } from "../redux/actions";
-
+import { loadUsersStart, deleteUserStart } from "../redux/actions";
+import { ToastContainer, toast } from "react-toastify";
 const iconWidth = 20;
-
+const timeoutInterval = 1000;
 const Home = (props) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.dataUsers);
+  const { users, isLoading } = useSelector((state) => state.dataUsers);
   useEffect(() => {
     dispatch(loadUsersStart());
   }, [dispatch]);
 
-  const handleDelete = (itemId) => {};
+  const handleDelete = (itemId) => {
+    if (
+      !isLoading &&
+      window.confirm("Are you sure that you would like to delete that user?")
+    ) {
+      dispatch(deleteUserStart(itemId));
+      toast.info("deleting users");
+      setTimeout(() => dispatch(loadUsersStart()), timeoutInterval);
+    }
+  };
   return (
     <div className="container" style={{ marginTop: 150 }}>
+      <ToastContainer
+        position="top-right"
+        autoClose={timeoutInterval}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+      />
       <MDBTable>
         <MDBTableHead dark>
           <tr>

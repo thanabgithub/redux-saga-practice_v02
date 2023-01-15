@@ -14,9 +14,11 @@ import {
   loadUsersError,
   createUserSuccess,
   createUserError,
+  deleteUserSuccess,
+  deleteUserError,
 } from "./actions";
 import * as types from "./actionTypes";
-import { loadUsersApi, createUsersApi } from "./api";
+import { loadUsersApi, createUserApi, deleteUserApi } from "./api";
 
 function* onLoadUsersStartAsync() {
   try {
@@ -32,12 +34,23 @@ function* onLoadUsersStartAsync() {
 
 function* onCreateUserStartAsync({ payload }) {
   try {
-    const response = yield call(createUsersApi, payload);
+    const response = yield call(createUserApi, payload);
     if (response.status === 200) {
       yield put(createUserSuccess());
     }
   } catch (e) {
     yield put(createUserError(e));
+  }
+}
+
+function* onDeleteUserStartAsync({ payload }) {
+  try {
+    const response = yield call(deleteUserApi, payload);
+    if (response.status === 200) {
+      yield put(deleteUserSuccess());
+    }
+  } catch (e) {
+    yield put(deleteUserError(e));
   }
 }
 
@@ -49,11 +62,14 @@ function* onCreateUser() {
   yield takeLatest(types.CREATE_USER_START, onCreateUserStartAsync);
 }
 
-const userSagas = [fork(onLoadUsers), fork(onCreateUser)];
+function* onDeleteUser() {
+  yield takeLatest(types.DELETE_USER_START, onDeleteUserStartAsync);
+}
+
+const userSagas = [fork(onLoadUsers), fork(onCreateUser), fork(onDeleteUser)];
 
 function* rootSaga() {
   yield all([...userSagas]);
 }
 
-// export { onLoadUsersStartAsync, onLoadUsers };
 export default rootSaga;

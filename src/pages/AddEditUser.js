@@ -3,6 +3,7 @@ import { MDBValidation, MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createUserStart } from "../redux/actions";
+import { ToastContainer, toast } from "react-toastify";
 
 const initialState = {
   name: "",
@@ -11,10 +12,11 @@ const initialState = {
   address: "",
 };
 
+const timeoutInterval = 5000;
+
 const AddEditUser = (props) => {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState(initialState);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { name, email, phone, address } = formValue;
   const dispatch = useDispatch();
 
@@ -22,11 +24,10 @@ const AddEditUser = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name && email && phone && address && !isSubmitting && !isLoading) {
-      setIsSubmitting(true);
+    if (name && email && phone && address && !isLoading) {
       dispatch(createUserStart(formValue));
-      setTimeout(() => navigate("/"), 5000);
-      setIsSubmitting(false);
+      toast.info("adding users");
+      setTimeout(() => navigate("/"), timeoutInterval);
     }
   };
 
@@ -44,6 +45,18 @@ const AddEditUser = (props) => {
       onSubmit={handleSubmit}
     >
       <p className="fs-2 fw-bold">Add User Detail </p>
+      <ToastContainer
+        position="top-right"
+        autoClose={timeoutInterval}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover={false}
+        theme="light"
+      />
       <div
         style={{
           margin: "auto",

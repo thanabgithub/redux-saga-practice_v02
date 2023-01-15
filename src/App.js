@@ -6,11 +6,15 @@ import Home from "./pages/Home";
 import AddEditUser from "./pages/AddEditUser";
 import UserInfo from "./pages/UserInfo";
 import About from "./pages/About";
+import { useSelector } from "react-redux";
+import "react-toastify/dist/ReactToastify.css";
 const App = () => {
+  const { isLoading } = useSelector((state) => state.dataUsers);
   return (
     <BrowserRouter>
       <div className="App" style={{ height: "100%" }}>
         <Header />
+
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route exact path="/addUser" element={<AddEditUser />} />
