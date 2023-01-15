@@ -29,6 +29,9 @@ const AddEditUser = (props) => {
       setFormValue((prev) => {
         return { ...prev, ...thisUser };
       });
+    } else {
+      setIsEditMode(false);
+      setFormValue(initialState);
     }
   }, [id]);
 
