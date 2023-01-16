@@ -1,19 +1,5 @@
 import * as types from "./actionTypes";
 
-const loadUsersStart = () => ({
-  type: types.LOAD_USERS_START,
-});
-
-const loadUsersSuccess = (users) => ({
-  type: types.LOAD_USERS_SUCCESS,
-  payload: users,
-});
-
-const loadUsersError = (error) => ({
-  type: types.LOAD_USERS_ERROR,
-  payload: error,
-});
-
 const createUserStart = (user) => ({
   type: types.CREATE_USER_START,
   payload: user,
@@ -28,17 +14,17 @@ const createUserError = (error) => ({
   payload: error,
 });
 
-const deleteUserStart = (userId) => ({
-  type: types.DELETE_USER_START,
-  payload: userId,
+const loadUsersStart = () => ({
+  type: types.LOAD_USERS_START,
 });
 
-const deleteUserSuccess = () => ({
-  type: types.DELETE_USER_SUCCESS,
+const loadUsersSuccess = (users) => ({
+  type: types.LOAD_USERS_SUCCESS,
+  payload: users,
 });
 
-const deleteUserError = (error) => ({
-  type: types.DELETE_USER_ERROR,
+const loadUsersError = (error) => ({
+  type: types.LOAD_USERS_ERROR,
   payload: error,
 });
 
@@ -56,7 +42,38 @@ const updateUserError = (error) => ({
   payload: error,
 });
 
-export { loadUsersStart, loadUsersSuccess, loadUsersError };
+const deleteUserStart = (userId) => ({
+  type: types.DELETE_USER_START,
+  payload: userId,
+});
+
+const deleteUserSuccess = () => ({
+  type: types.DELETE_USER_SUCCESS,
+});
+
+const deleteUserError = (error) => ({
+  type: types.DELETE_USER_ERROR,
+  payload: error,
+});
+
+const searchUserStart = (query) => ({
+  type: types.SEARCH_USER_START,
+  payload: query,
+});
+
+const searchUserSuccess = (users) => ({
+  type: types.SEARCH_USER_SUCCESS,
+  payload: users,
+});
+
+const searchUserError = (error) => ({
+  type: types.SEARCH_USER_ERROR,
+  payload: error,
+});
+
 export { createUserStart, createUserSuccess, createUserError };
-export { deleteUserStart, deleteUserSuccess, deleteUserError };
+export { loadUsersStart, loadUsersSuccess, loadUsersError };
 export { updateUserStart, updateUserSuccess, updateUserError };
+export { deleteUserStart, deleteUserSuccess, deleteUserError };
+
+export { searchUserStart, searchUserSuccess, searchUserError };

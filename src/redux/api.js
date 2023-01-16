@@ -33,3 +33,12 @@ export const updateUserApi = async (userId, userInfo) => {
     throw new Error(e);
   }
 };
+
+export const searchUserApi = async (query) => {
+  try {
+    const searchUrl = `http://141.164.40.222:5000/users?q=${query}`;
+    return await axios.put(searchUrl);
+  } catch (e) {
+    throw new Error(e);
+  }
+};
