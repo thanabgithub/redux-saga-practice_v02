@@ -9,7 +9,6 @@ import About from "./pages/About";
 import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 const App = () => {
-  const { isLoading } = useSelector((state) => state.dataUsers);
   return (
     <BrowserRouter>
       <div className="App" style={{ height: "100%" }}>

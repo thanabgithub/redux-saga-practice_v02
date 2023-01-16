@@ -12,14 +12,20 @@ const initialState = {
   address: "",
 };
 
-const timeoutInterval = 5000;
+const timeoutInterval = 1000;
 
 const AddEditUser = (props) => {
   const navigate = useNavigate();
   const { id } = useParams();
   console.log(`id: ${id}`);
   const [formValue, setFormValue] = useState(initialState);
-  const { users, isLoading } = useSelector((state) => state.dataUsers);
+  const { users, isLoading, error } = useSelector((state) => state.dataUsers);
+
+  useEffect(() => {
+    error && toast.error(error);
+  }, [error]);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   useEffect(() => {
     if (id) {
@@ -38,17 +44,29 @@ const AddEditUser = (props) => {
   const { name, email, phone, address } = formValue;
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    isLoading && isSubmitting && !isEditMode && toast.info("Adding");
+    isLoading && isSubmitting && isEditMode && toast.info("Updating");
+  }, [isLoading, isSubmitting, isEditMode]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name && email && phone && address && !isLoading) {
+    if (name && email && phone && address && !isLoading && !isSubmitting) {
+      setIsSubmitting(true);
       if (isEditMode) {
         dispatch(updateUserStart({ id, formValue }));
-        toast.info("updating users");
-        setTimeout(() => navigate("/"), timeoutInterval);
+
+        setTimeout(() => {
+          navigate("/");
+          setIsSubmitting(false);
+        }, timeoutInterval);
       } else {
         dispatch(createUserStart(formValue));
-        toast.info("adding users");
-        setTimeout(() => navigate("/"), timeoutInterval);
+
+        setTimeout(() => {
+          navigate("/");
+          setIsSubmitting(false);
+        }, timeoutInterval);
       }
     }
   };

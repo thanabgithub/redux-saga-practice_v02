@@ -30,7 +30,7 @@ import {
 function* onCreateUserStartAsync({ payload }) {
   try {
     const response = yield call(createUserApi, payload);
-    if (response.status === 200) {
+    if (response.status === 201) {
       yield put(createUserSuccess());
     }
   } catch (e) {
@@ -41,8 +41,9 @@ function* onCreateUserStartAsync({ payload }) {
 function* onLoadUsersStartAsync() {
   try {
     const response = yield call(loadUsersApi);
+
     if (response.status === 200) {
-      yield delay(1000);
+      yield delay(500);
       yield put(loadUsersSuccess(response.data));
     }
   } catch (e) {
@@ -54,6 +55,7 @@ function* onUpdateUserStartAsync({ payload }) {
   try {
     const { id, formValue } = payload;
     const response = yield call(updateUserApi, id, formValue);
+
     if (response.status === 200) {
       yield put(updateUserSuccess());
     }
@@ -64,6 +66,7 @@ function* onUpdateUserStartAsync({ payload }) {
 function* onDeleteUserStartAsync({ payload }) {
   try {
     const response = yield call(deleteUserApi, payload);
+
     if (response.status === 200) {
       yield put(deleteUserSuccess());
     }
