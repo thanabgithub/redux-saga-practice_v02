@@ -10,7 +10,14 @@ const initialState = {
   email: "",
   phone: "",
   address: "",
+  status: "",
+  status: "",
 };
+
+const options = [
+  { label: "active", value: "active" },
+  { label: "inactive", value: "inactive" },
+];
 
 const timeoutInterval = 1000;
 
@@ -41,7 +48,7 @@ const AddEditUser = (props) => {
     }
   }, [id]);
 
-  const { name, email, phone, address } = formValue;
+  const { name, email, phone, address, status } = formValue;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -75,6 +82,13 @@ const AddEditUser = (props) => {
     let { name, value } = e.target;
     setFormValue((prevForm) => {
       return { ...formValue, [name]: value };
+    });
+  };
+
+  const onDropdownChange = (e) => {
+    let { value } = e.target;
+    setFormValue((prevForm) => {
+      return { ...formValue, status: value };
     });
   };
   return (
@@ -149,6 +163,26 @@ const AddEditUser = (props) => {
           label="address"
           validation="Please provide a address"
         />
+        <br />
+        <select
+          style={{
+            width: "100%",
+            borderRadius: 4,
+            height: 35,
+            borderColor: "grey",
+          }}
+          onChange={onDropdownChange}
+        >
+          <option>{status || "Please Select Status"}</option>
+          {options.map((option) => (
+            <option
+              value={option.value || ""}
+              selected={option.label === status ? true : false}
+            >
+              {option.label}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="col-12">
         <MDBBtn style={{ marginRight: 10 }} type="submit">

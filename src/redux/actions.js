@@ -71,9 +71,25 @@ const searchUserError = (error) => ({
   payload: error,
 });
 
+const filterUserStart = (value) => ({
+  type: types.FILTER_USER_START,
+  payload: value,
+});
+
+const filterUserSuccess = (users) => ({
+  type: types.FILTER_USER_SUCCESS,
+  payload: users,
+});
+
+const filterUserError = (error) => ({
+  type: types.FILTER_USER_ERROR,
+  payload: error,
+});
+
 export { createUserStart, createUserSuccess, createUserError };
 export { loadUsersStart, loadUsersSuccess, loadUsersError };
 export { updateUserStart, updateUserSuccess, updateUserError };
 export { deleteUserStart, deleteUserSuccess, deleteUserError };
 
 export { searchUserStart, searchUserSuccess, searchUserError };
+export { filterUserStart, filterUserSuccess, filterUserError };
