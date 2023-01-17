@@ -8,51 +8,20 @@
       "id": 1
     },
     {
-      "name": "222",
-      "email": "2",
-      "phone": "2",
-      "address": "2",
+      "name": "1",
+      "email": "1",
+      "phone": "1",
+      "address": "1",
+      "status": "active",
       "id": 2
     },
     {
-      "name": "james mm",
-      "email": "ee",
-      "phone": "ee",
-      "address": "ee",
+      "name": "2",
+      "email": "2",
+      "phone": "2",
+      "address": "2",
       "status": "active",
       "id": 3
-    },
-    {
-      "name": "jam 33",
-      "email": "ee",
-      "phone": "ee",
-      "address": "eee",
-      "status": "active",
-      "id": 4
-    },
-    {
-      "name": "56",
-      "email": "rt",
-      "phone": "r",
-      "address": "r",
-      "status": "inactive",
-      "id": 5
-    },
-    {
-      "name": "f",
-      "email": "f",
-      "phone": "f",
-      "address": "f",
-      "status": "active",
-      "id": 6
-    },
-    {
-      "name": "y",
-      "email": "y",
-      "phone": "y",
-      "address": "y",
-      "status": "inactive",
-      "id": 7
     }
   ]
 }

@@ -10,31 +10,48 @@ import {
   MDBContainer,
   MDBRow,
   MDBCol,
+  MDBBtnGroup,
 } from "mdb-react-ui-kit";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loadUsersStart, deleteUserStart } from "../redux/actions";
+import {
+  loadUsersStart,
+  deleteUserStart,
+  filterUserStart,
+} from "../redux/actions";
 import { ToastContainer, toast } from "react-toastify";
 const iconWidth = 20;
 const timeoutInterval = 1000;
 const Home = React.memo((props) => {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [filterValue, setFilterValue] = useState("");
 
   const dispatch = useDispatch();
   const { users, isLoading, error } = useSelector((state) => state.dataUsers);
+
   useEffect(() => {
-    dispatch(loadUsersStart());
-  }, [dispatch]);
+    if (filterValue === "") {
+      dispatch(loadUsersStart());
+    } else {
+      dispatch(filterUserStart(filterValue));
+    }
+  }, [dispatch, filterValue]);
 
   useEffect(() => {
     console.log(isLoading, isDeleting);
 
-    isLoading & !isDeleting && toast.info("Loading");
+    isLoading & !filterValue & !isDeleting && toast.info("Loading");
   }, [isLoading, isDeleting]);
 
   useEffect(() => {
     isDeleting && toast.info("Deleting");
   }, [isDeleting]);
+
+  useEffect(() => {
+    // if (filterValue != "") toast.info("filtering");
+
+    filterValue && toast.info("filtering");
+  }, [filterValue]);
 
   useEffect(() => {
     error && toast.error(error);
@@ -55,12 +72,46 @@ const Home = React.memo((props) => {
       }, timeoutInterval);
     }
   };
+
+  const onFilterChange = (filterInput) => {
+    !isLoading &&
+      setFilterValue((prev) => {
+        return prev !== filterInput ? filterInput : "";
+      });
+  };
+
   return (
     <div className="container" style={{ marginTop: 150 }}>
       {isLoading ? (
         <MDBSpinner />
       ) : (
         <MDBContainer>
+          <MDBRow style={{ marginBottom: 20 }}>
+            <MDBCol>Sort By</MDBCol>
+            <MDBCol>
+              Filter By Status{" "}
+              <MDBBtnGroup>
+                <MDBBtn
+                  color="success"
+                  style={{
+                    color: filterValue === "active" ? "black" : "white",
+                  }}
+                  onClick={() => onFilterChange("active")}
+                >
+                  active
+                </MDBBtn>
+                <MDBBtn
+                  color="danger"
+                  style={{
+                    color: filterValue === "inactive" ? "black" : "white",
+                  }}
+                  onClick={() => onFilterChange("inactive")}
+                >
+                  inactive
+                </MDBBtn>
+              </MDBBtnGroup>
+            </MDBCol>
+          </MDBRow>
           <MDBTable>
             <MDBTableHead dark>
               <tr>
@@ -83,8 +134,8 @@ const Home = React.memo((props) => {
                     <td style={{ lineHeight: 2 }}>{item.name}</td>
                     <td style={{ lineHeight: 2 }}>{item.email}</td>
                     <td style={{ lineHeight: 2 }}>{item.phone}</td>
-                    <td style={{ lineHeight: 2 }}>{item.status}</td>
                     <td style={{ lineHeight: 2 }}>{item.address}</td>
+                    <td style={{ lineHeight: 2 }}>{item.status}</td>
                     <td
                       style={{
                         display: "flex",
@@ -158,10 +209,6 @@ const Home = React.memo((props) => {
                 </MDBTableBody>
               ))}
           </MDBTable>
-          <MDBRow style={{ marginBottom: 20 }}>
-            <MDBCol>Sort By</MDBCol>
-            <MDBCol>Filter By Status</MDBCol>
-          </MDBRow>
         </MDBContainer>
       )}
       <ToastContainer

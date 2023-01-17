@@ -49,7 +49,7 @@ function* onLoadUsersStartAsync() {
     const response = yield call(loadUsersApi);
 
     if (response.status === 200) {
-      yield delay(500);
+      yield delay(100);
       yield put(loadUsersSuccess(response.data));
     }
   } catch (e) {
@@ -69,9 +69,9 @@ function* onUpdateUserStartAsync({ payload }) {
     yield put(updateUserError(e));
   }
 }
-function* onDeleteUserStartAsync({ payload }) {
+function* onDeleteUserStartAsync({ payload: userId }) {
   try {
-    const response = yield call(deleteUserApi, payload);
+    const response = yield call(deleteUserApi, userId);
 
     if (response.status === 200) {
       yield put(deleteUserSuccess());
@@ -81,9 +81,9 @@ function* onDeleteUserStartAsync({ payload }) {
   }
 }
 
-function* onSearchUserStartAsync({ payload }) {
+function* onSearchUserStartAsync({ payload: query }) {
   try {
-    const response = yield call(searchUserApi, payload);
+    const response = yield call(searchUserApi, query);
 
     if (response.status === 200) {
       yield put(searchUserSuccess(response.data));
