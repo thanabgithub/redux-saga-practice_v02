@@ -18,6 +18,7 @@ import {
   loadUsersStart,
   deleteUserStart,
   filterUserStart,
+  sortUserStart,
 } from "../redux/actions";
 import { ToastContainer, toast } from "react-toastify";
 const iconWidth = 20;
@@ -25,34 +26,40 @@ const timeoutInterval = 1000;
 const Home = React.memo((props) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [filterValue, setFilterValue] = useState("");
+  const [sortValue, setSortValue] = useState("");
+
+  const sortOption = ["name", "email", "phone", "address", "status"];
 
   const dispatch = useDispatch();
   const { users, isLoading, error } = useSelector((state) => state.dataUsers);
 
   useEffect(() => {
-    if (filterValue === "") {
+    if (filterValue === "" && sortValue === "") {
       dispatch(loadUsersStart());
     } else {
-      dispatch(filterUserStart(filterValue));
+      filterValue && dispatch(filterUserStart(filterValue));
+      sortValue && dispatch(sortUserStart(sortValue));
     }
-  }, [dispatch, filterValue]);
+  }, [dispatch, filterValue, sortValue]);
 
   useEffect(() => {
-    console.log(isLoading, isDeleting);
-
-    isLoading & !filterValue & !isDeleting && toast.info("Loading");
-  }, [isLoading, isDeleting]);
+    isLoading &&
+      !filterValue &&
+      !isDeleting &&
+      !sortValue &&
+      toast.info("Loading");
+  }, [isLoading, isDeleting, sortValue]);
 
   useEffect(() => {
     isDeleting && toast.info("Deleting");
   }, [isDeleting]);
 
   useEffect(() => {
-    // if (filterValue != "") toast.info("filtering");
-
     filterValue && toast.info("filtering");
   }, [filterValue]);
-
+  useEffect(() => {
+    sortValue && toast.info("sorting");
+  }, [sortValue]);
   useEffect(() => {
     error && toast.error(error);
   }, [error]);
@@ -80,6 +87,15 @@ const Home = React.memo((props) => {
       });
   };
 
+  const onSortChange = (e) => {
+    let sortValue = e.target.value;
+
+    if (sortOption.includes(sortValue) || sortValue === "") {
+      console.log("sortOption.includes(sortValue)");
+      setSortValue(sortValue);
+    }
+  };
+
   return (
     <div className="container" style={{ marginTop: 150 }}>
       {isLoading ? (
@@ -87,9 +103,28 @@ const Home = React.memo((props) => {
       ) : (
         <MDBContainer>
           <MDBRow style={{ marginBottom: 20 }}>
-            <MDBCol>Sort By</MDBCol>
             <MDBCol>
-              Filter By Status{" "}
+              <p>Sort By</p>
+              <select
+                stype={{ width: "50%", borderRadius: 2, height: 35 }}
+                value={sortValue}
+                onChange={onSortChange}
+              >
+                <option value="">Please Select Value</option>
+                {sortOption.map((item, index) => (
+                  <option value={item.toLowerCase()} key={index}>
+                    {item}
+                  </option>
+                ))}
+                {sortValue && (
+                  <option value="" key="99">
+                    reset
+                  </option>
+                )}
+              </select>
+            </MDBCol>
+            <MDBCol>
+              <p> Filter By Status</p>
               <MDBBtnGroup>
                 <MDBBtn
                   color="success"

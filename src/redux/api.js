@@ -16,19 +16,19 @@ export const createUserApi = async (user) => {
   }
 };
 
-export const deleteUserApi = async (userId) => {
+export const updateUserApi = async (userId, userInfo) => {
   try {
-    const deleteUrl = `http://141.164.40.222:5000/users/${userId}`;
-    return await axios.delete(deleteUrl);
+    const updateUrl = `http://141.164.40.222:5000/users/${userId}`;
+    return await axios.put(updateUrl, userInfo);
   } catch (e) {
     throw new Error(e);
   }
 };
 
-export const updateUserApi = async (userId, userInfo) => {
+export const deleteUserApi = async (userId) => {
   try {
-    const updateUrl = `http://141.164.40.222:5000/users/${userId}`;
-    return await axios.put(updateUrl, userInfo);
+    const deleteUrl = `http://141.164.40.222:5000/users/${userId}`;
+    return await axios.delete(deleteUrl);
   } catch (e) {
     throw new Error(e);
   }
@@ -47,6 +47,15 @@ export const filterUserApi = async (value) => {
   try {
     const filterUrl = `http://141.164.40.222:5000/users?status=${value}`;
     return await axios.get(filterUrl);
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const sortUserApi = async (value) => {
+  try {
+    const sortUrl = `http://141.164.40.222:5000/users?_sort=${value}&_order=asc`;
+    return await axios.get(sortUrl);
   } catch (e) {
     throw new Error(e);
   }

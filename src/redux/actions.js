@@ -86,6 +86,21 @@ const filterUserError = (error) => ({
   payload: error,
 });
 
+const sortUserStart = (value) => ({
+  type: types.SORT_USER_START,
+  payload: value,
+});
+
+const sortUserSuccess = (users) => ({
+  type: types.SORT_USER_SUCCESS,
+  payload: users,
+});
+
+const sortUserError = (error) => ({
+  type: types.SORT_USER_ERROR,
+  payload: error,
+});
+
 export { createUserStart, createUserSuccess, createUserError };
 export { loadUsersStart, loadUsersSuccess, loadUsersError };
 export { updateUserStart, updateUserSuccess, updateUserError };
@@ -93,3 +108,4 @@ export { deleteUserStart, deleteUserSuccess, deleteUserError };
 
 export { searchUserStart, searchUserSuccess, searchUserError };
 export { filterUserStart, filterUserSuccess, filterUserError };
+export { sortUserStart, sortUserSuccess, sortUserError };

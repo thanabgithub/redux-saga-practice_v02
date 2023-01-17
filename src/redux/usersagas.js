@@ -22,6 +22,8 @@ import {
   searchUserError,
   filterUserSuccess,
   filterUserError,
+  sortUserSuccess,
+  sortUserError,
 } from "./actions";
 import * as types from "./actionTypes";
 import {
@@ -31,6 +33,7 @@ import {
   deleteUserApi,
   searchUserApi,
   filterUserApi,
+  sortUserApi,
 } from "./api";
 
 function* onCreateUserStartAsync({ payload }) {
@@ -105,6 +108,18 @@ function* onFilterUserStartAsync({ payload }) {
   }
 }
 
+function* onSortUserStartAsync({ payload }) {
+  try {
+    const response = yield call(sortUserApi, payload);
+
+    if (response.status === 200) {
+      yield put(sortUserSuccess(response.data));
+    }
+  } catch (e) {
+    yield put(sortUserError(e));
+  }
+}
+
 function* onCreateUser() {
   yield takeLatest(types.CREATE_USER_START, onCreateUserStartAsync);
 }
@@ -123,6 +138,10 @@ function* onSearchUser() {
 function* onFilterUser() {
   yield takeLatest(types.FILTER_USER_START, onFilterUserStartAsync);
 }
+function* onSortUser() {
+  yield takeLatest(types.SORT_USER_START, onSortUserStartAsync);
+}
+
 const userSagas = [
   fork(onCreateUser),
   fork(onLoadUsers),
@@ -130,6 +149,7 @@ const userSagas = [
   fork(onDeleteUser),
   fork(onSearchUser),
   fork(onFilterUser),
+  fork(onSortUser),
 ];
 
 function* rootSaga() {
